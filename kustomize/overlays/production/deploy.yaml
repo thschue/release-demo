@@ -1,0 +1,12 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx
+spec:
+  template:
+    metadata:
+      annotations:
+        release.dynatrace.com/stage: production
+      labels:
+        app.kubernetes.io/version: 1.0.1
+        app.kubernetes.io/part-of: web-application

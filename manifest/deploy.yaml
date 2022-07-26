@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: nginx
+  name: nginx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      annotations:
+        # Name of this annotation is not relevant for the release inventory
+        release.dynatrace.com/stage: dev 
+      labels:
+        app: nginx
+        app.kubernetes.io/version: 1.0.1
+        app.kubernetes.io/part-of: web-application
+    spec:
+      containers:
+      - image: nginx
+        name: nginx
+        env:
+        - name: DT_RELEASE_VERSION
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.labels['app.kubernetes.io/version']
+        - name: DT_RELEASE_STAGE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.annotations['release.dynatrace.com/stage']
+        - name: DT_RELEASE_PRODUCT
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.labels['app.kubernetes.io/part-of']

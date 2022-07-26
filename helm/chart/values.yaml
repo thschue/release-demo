@@ -1,0 +1,3 @@
+stage: dev
+application: web-application
+version: 0.1.0
